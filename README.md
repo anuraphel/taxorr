@@ -51,4 +51,8 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 streamlit run ui/app.py
+
+## 🚀 Live Demo
+
+**Streamlit App:** https://your-app-name.streamlit.app
 ```
