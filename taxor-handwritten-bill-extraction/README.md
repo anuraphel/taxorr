@@ -171,7 +171,7 @@ taxor-handwritten-bill-extraction
 ## 🤖 Model Comparison
 
 <p align="center">
-  <img src="model_comparison.png" alt="Model Comparison" width="100%">
+  <img src="model comparison.png" alt="Model Comparison" width="100%">
 </p>
 
 ## 📈 Performance Metrics
