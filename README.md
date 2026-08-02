@@ -1,47 +1,54 @@
 # Taxor - Evaluation of Multimodal LLMs for Handwritten Bill Extraction
 
-This repository contains the screening task for the Software Engineering Internship at Taxor.
+This repository contains my submission for the **Taxor Software Engineering Internship Screening Task**.
 
-## Project Location
+## 📁 Repository Structure
 
-The complete codebase, dataset, evaluation framework, and dashboard are located inside the subfolder:
-👉 **[taxor-handwritten-bill-extraction/](file:///c:/Users/G15/Desktop/taxorr/taxorr/taxor-handwritten-bill-extraction)**
+```
+.
+├── README.md
+└── taxor-handwritten-bill-extraction/
+    ├── README.md        ← Complete project documentation
+    ├── dataset/
+    ├── evaluator/
+    ├── models/
+    ├── ui/
+    ├── zoho/
+    └── ...
+```
 
-## Quick Start Instructions
+## 📖 Project Documentation
 
-To run the project locally, navigate to the project directory and follow these steps:
+The complete documentation, including:
 
-1. **Navigate to project directory:**
-   ```bash
-   cd taxor-handwritten-bill-extraction
-   ```
+- 🏗️ Working Architecture
+- 🏛️ System Design
+- 📊 Dashboard Screenshots
+- 🤖 Model Comparison
+- 📈 Performance Metrics
+- 🔄 Zoho Books Integration
+- 🚀 Installation Guide
+- 📋 Evaluation Methodology
+- 💡 Final Recommendations
 
-2. **Create a virtual environment & install requirements:**
-   ```bash
-   python -m venv venv
-   # On Windows:
-   .\venv\Scripts\activate
-   # On Mac/Linux:
-   source venv/bin/activate
-   
-   pip install -r requirements.txt
-   ```
+is available in:
 
-3. **Configure Environment Variables:**
-   Copy `.env.example` to `.env` and fill in API keys if you want live extractions.
-   *(Note: The framework defaults to high-fidelity mocks if keys are missing so it's fully testable out of the box!)*
-   ```bash
-   copy .env.example .env
-   ```
+**➡️ `taxor-handwritten-bill-extraction/README.md`**
 
-4. **Run the Streamlit Dashboard UI:**
-   ```bash
-   streamlit run ui/app.py
-   ```
+## 🚀 Quick Start
 
-5. **Run Batch Benchmarking CLI:**
-   ```bash
-   python main.py --run-eval
-   ```
+```bash
+cd taxor-handwritten-bill-extraction
 
-For detailed documentation, evaluation reports, and design choices, please refer to the project [README.md](file:///c:/Users/G15/Desktop/taxorr/taxorr/taxor-handwritten-bill-extraction/README.md) and [evaluation_report.md](file:///c:/Users/G15/Desktop/taxorr/taxorr/taxor-handwritten-bill-extraction/outputs/evaluation_report.md).
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+# Linux/macOS
+source venv/bin/activate
+
+pip install -r requirements.txt
+
+streamlit run ui/app.py
+```
