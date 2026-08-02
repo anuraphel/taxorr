@@ -1,101 +1,203 @@
-# Taxor Handwritten Bill Extraction & Model Evaluation
+Taxor – AI-Powered Handwritten Bill Extraction & Model Evaluation
+📖 Overview
 
-This project implements an evaluation framework and pipeline for extracting expense details from handwritten Indian bills/receipts using multimodal LLMs (Gemini, Claude, and OpenAI GPT), compares their accuracy and cost, and syncs the results into Zoho Books.
+Taxor is an AI-powered handwritten bill extraction framework that evaluates multiple multimodal Large Language Models (LLMs) for extracting structured expense information from handwritten Indian receipts.
 
----
+The system benchmarks model performance using accuracy, latency, token usage, and API cost while allowing validated expense data to be exported directly into Zoho Books.
 
-## 🏗️ Architecture & Approach
+Supported Models
+Gemini 1.5 Flash
+GPT-4o Mini
+Claude 3.5 Sonnet
+Groq (Llama 3.3 70B) (if you added it)
+Features
+Handwritten bill extraction
+Multi-model benchmarking
+Ground-truth accuracy evaluation
+Latency & cost analysis
+Token usage tracking
+Zoho Books integration
+Interactive Streamlit dashboard
+Batch evaluation framework
+Structured JSON validation using Pydantic
 
-The pipeline is designed to be pluggable, testable, and robust against handwriting variances:
 
-1. **Structured Schema Validation**: We define a strict schema using Pydantic (`ExpenseSchema`) containing:
-   - `vendor_name` (normalized string)
-   - `invoice_number` (cleaned alphanumeric string)
-   - `date` (standardized to `YYYY-MM-DD`)
-   - `amount` (float)
-   - `currency` (ISO 3-letter code)
-   - `tax_details` (GST breakdowns)
-2. **Model Wrappers**:
-   - **Gemini**: Uses native `response_schema` to guarantee structured JSON matching our Pydantic model directly.
-   - **GPT-4o-mini**: Uses `beta.chat.completions.parse` for built-in Pydantic schema validation.
-   - **Claude**: Uses `tool_choice` to force structured responses via Tool Use/Function Calling.
-3. **API Key Fallback / Mock Mode**: If keys are missing or invalid, the wrappers fallback to high-fidelity mocks with simulated errors and latencies to showcase the evaluator's features out-of-the-box.
-4. **Zoho Books Integration**: Uses Zoho Books REST API to create actual expense entries. Includes automatic OAuth 2.0 access token refresh using client credentials.
 
----
+## 🏗️ Working Architecture
 
-## 📈 Model Benchmarks (Dataset of 10 Bills)
 
-### Overview Comparison
-| Model | Overall Accuracy | Avg Latency (s) | Avg Cost / Bill | Cost per 100 Bills | Run Type |
-|---|---|---|---|---|---|
-| **gemini-1.5-flash** | 98.33% | 1.76s | $0.00005 | $0.005 | Mock / Simulated |
-| **gpt-4o-mini** | 98.33% | 1.35s | $0.00009 | $0.009 | Mock / Simulated |
-| **claude-3-5-sonnet** | 100.00% | 3.39s | $0.00654 | $0.654 | Mock / Simulated |
+The system follows a modular pipeline to extract, evaluate, and synchronize expense data from handwritten bills.
 
-### Field-Level Accuracy
-| Model | Vendor Name | Invoice Number | Date | Amount | Currency | Tax Details |
-|---|---|---|---|---|---|---|
-| **gemini-1.5-flash** | 100.0% | 100.0% | 100.0% | 90.0% | 100.0% | 100.0% |
-| **gpt-4o-mini** | 100.0% | 90.0% | 100.0% | 100.0% | 100.0% | 100.0% |
-| **claude-3-5-sonnet** | 100.0% | 100.0% | 100.0% | 100.0% | 100.0% | 100.0% |
+### Workflow
 
----
+1. **Bill Input**
+   - The user uploads a handwritten bill or selects a sample bill from the dataset through the Streamlit dashboard.
 
-## 🧠 Evaluation Methodology
+2. **Model Selection**
+   - One or more multimodal LLMs (Gemini 1.5 Flash, GPT-4o Mini, Claude 3.5 Sonnet, and Groq Llama 3.3) are selected for processing.
 
-To score correctness objectively without vibes, we implement:
-- **Vendor Name / Tax Details**: Levenshtein-based fuzzy match score. A match is considered correct if the similarity is **>= 80%**.
-- **Invoice Number**: Exact match after stripping leading/trailing whitespace, punctuation, and leading zeros.
-- **Date**: Normalizes Indian dates (e.g. `12-07-2026`, `14/07/2026`, `18-July-2026`) to standard ISO `YYYY-MM-DD` format before comparison.
-- **Amount**: Numerical float comparison. Absolute difference **< 0.05** is marked correct.
+3. **Expense Extraction**
+   - Each selected model independently analyzes the bill image and extracts structured expense information, including:
+     - Vendor Name
+     - Invoice Number
+     - Date
+     - Amount
+     - Currency
+     - Tax Details
 
----
+4. **Schema Validation**
+   - The extracted output is validated using a common **Pydantic ExpenseSchema**, ensuring all models return data in a consistent format.
 
-## 💡 Final Recommendation
+5. **Evaluation Engine**
+   - The structured outputs are compared against the ground truth dataset to calculate:
+     - Field-level Accuracy
+     - Overall Accuracy
+     - Response Latency
+     - Token Usage
+     - API Cost
 
-Based on our evaluation metrics and cost-benefit analysis:
+6. **Comparison Dashboard**
+   - The Streamlit interface displays the extracted results from all selected models, allowing users to compare their performance side by side.
 
-1. **Best Model Overall**: **Gemini 1.5 Flash**. 
-   - *Why?* It delivers 98.3% accuracy while being **130x cheaper** than Claude 3.5 Sonnet. A cost of $0.005 per 100 bills makes it the most viable model for a production pipeline at scale.
-2. **Best for Complex / High-Value Bills**: **Claude 3.5 Sonnet**.
-   - *Why?* It achieves perfect 100% accuracy on messy handwriting but costs $0.654 per 100 bills.
-3. **Proposed Hybrid Pipeline**:
-   - Run the initial extraction using **Gemini 1.5 Flash**.
-   - Implement basic validation checks (e.g. ensuring `amount > 0` and `date` is parseable).
-   - If confidence scores are low or validation checks fail, route the image to **Claude 3.5 Sonnet** as an automated second pass before human-in-the-loop validation.
+7. **Zoho Books Integration**
+   - After reviewing the results, users can choose the best extraction and export the expense directly to **Zoho Books** using its REST API.
 
----
+### Working Architecture Diagram
 
-## 🔧 Installation & Usage
+## 🏗️ Working Architecture
 
-### Setup
-1. Clone the repository and navigate into this folder.
-2. Create and activate a virtual environment:
-   ```bash
-   python -m venv venv
-   # Windows:
-   .\venv\Scripts\activate
-   # Linux/Mac:
-   source venv/bin/activate
-   ```
-3. Install requirements:
-   ```bash
-   pip install -r requirements.txt
-   ```
-4. Copy `.env.example` to `.env` and fill in keys if using live APIs.
+<p align="center">
+  <img src="working_architecture.png" alt="Working Architecture" width="100%">
+</p>
 
-### Run Streamlit Web UI Dashboard
-```bash
-streamlit run ui/app.py
-```
+The modular architecture enables independent evaluation of multiple AI models while maintaining a common validation and benchmarking pipeline. This design makes it easy to integrate additional LLM providers, improve evaluation strategies, and extend the system with new downstream integrations.
 
-### Run Batch Evaluation CLI
-```bash
-python main.py --run-eval
-```
+## 🏛️ System Design
 
-### Run Automated Tests
-```bash
-pytest
-```
+The system is designed using a modular architecture where each component has a single responsibility. This approach improves maintainability, scalability, and makes it easy to integrate additional LLM providers or external services in the future.
+
+### Components
+
+1. **Streamlit Web UI**
+   - Provides an interactive interface for users to upload handwritten bills, select AI models, compare extraction results, run batch evaluations, and export expenses to Zoho Books.
+
+2. **Dataset & Ground Truth**
+   - Stores handwritten bill images and their corresponding ground truth annotations used for benchmarking model performance and calculating accuracy metrics.
+
+3. **Model Factory**
+   - Acts as a centralized layer that dynamically initializes the selected LLM client based on the user's choice. Currently supported models include:
+     - Gemini 1.5 Flash
+     - GPT-4o Mini
+     - Claude 3.5 Sonnet
+     - Groq Llama 3.3
+
+4. **Response Parser**
+   - Converts model responses into a standardized JSON format and handles response parsing before validation.
+
+5. **Expense Schema Validation**
+   - Uses a common **Pydantic ExpenseSchema** to validate and normalize extracted expense fields, ensuring consistent output regardless of the underlying AI model.
+
+6. **Evaluation Engine**
+   - Compares extracted values with the ground truth dataset and computes:
+     - Field-level Accuracy
+     - Overall Accuracy
+     - Response Latency
+     - Token Usage
+     - API Cost
+     - Performance Metrics
+
+7. **Results Store**
+   - Stores evaluation results, reports, logs, and generated CSV/JSON files for further analysis and benchmarking.
+
+8. **Zoho Books Integration**
+   - Enables seamless synchronization of validated expense data with Zoho Books through its REST API, allowing extracted bills to be converted into expense records.
+
+9. **Shared Components**
+   - Common utilities such as environment configuration, logging, exception handling, API wrappers, and rate limiting are shared across all modules to ensure consistency and simplify maintenance.
+
+### System Design Diagram
+
+<<p align="center">
+  <img src="system_design.png" alt="System Design" width="100%">
+</p>
+
+The modular design separates the user interface, AI model layer, evaluation framework, and external integrations into independent components. This separation allows new LLM providers, evaluation metrics, or downstream services to be integrated with minimal changes to the existing codebase while maintaining a clean and scalable architecture.
+
+
+## 🔄 Project Workflow
+
+1. User uploads a handwritten bill or selects a sample bill.
+2. The selected bill is sent to one or more AI models.
+3. Each model extracts structured expense information.
+4. Outputs are validated using a common Expense Schema.
+5. The evaluation engine compares results with the ground truth dataset.
+6. Accuracy, latency, token usage, and API cost are calculated.
+7. Results are displayed in the Streamlit dashboard.
+8. The selected output can be synchronized to Zoho Books.
+
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| Language | Python |
+| Frontend | Streamlit |
+| AI Models | Gemini, GPT-4o, Claude, Groq |
+| Validation | Pydantic |
+| APIs | OpenAI, Gemini, Anthropic, Groq, Zoho Books |
+| Testing | Pytest |
+
+
+Project Structure:
+taxor-handwritten-bill-extraction
+│
+├── dataset/
+├── evaluator/
+├── models/
+├── outputs/
+├── tests/
+├── ui/
+├── zoho/
+├── main.py
+├── requirements.txt
+└── README.md
+
+##Screenshots:
+## 📊 Dashboard
+
+<p align="center">
+  <img src="dashboard.png" alt="Dashboard" width="100%">
+</p>
+
+## 🤖 Model Comparison
+
+<p align="center">
+  <img src="model_comparison.png" alt="Model Comparison" width="100%">
+</p>
+
+## 📈 Performance Metrics
+
+<p align="center">
+  <img src="performance metrics.png" alt="Performance Metrics" width="100%">
+</p>
+
+## 🔄 Zoho Books Synchronization
+
+<p align="center">
+  <img src="sync to zoho.png" alt="Sync to Zoho" width="100%">
+</p>
+
+## 📚 Zoho Books Page
+
+<p align="center">
+  <img src="zoho books page.png" alt="Zoho Books Page" width="100%">
+</p>
+
+
+## 🌟 Key Highlights
+
+- Supports **4 Multimodal LLMs**
+- Automated benchmarking across multiple models
+- Measures **Accuracy, Latency, Token Usage, and API Cost**
+- Direct integration with **Zoho Books**
+- Interactive **Streamlit Dashboard**
+- Extensible architecture for adding new AI models
