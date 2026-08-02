@@ -1,0 +1,20 @@
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Generated output
+outputs/
+coa_debug.json
+
+# OS files
+.DS_Store
+Thumbs.db

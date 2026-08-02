@@ -1,0 +1,21 @@
+# Core LLM & API packages
+openai
+groq
+anthropic
+google-generativeai
+python-dotenv
+pydantic
+pydantic
+
+
+# Data & Image processing
+pandas
+numpy
+pillow
+
+# UI & Web
+streamlit
+requests
+
+# Testing / Evaluation
+pytest

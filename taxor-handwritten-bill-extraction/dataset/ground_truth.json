@@ -1,0 +1,82 @@
+{
+  "sharma_grocery_bill.png": {
+    "vendor_name": "Sharma Kirana Store",
+    "invoice_number": "N/A",
+    "date": "2026-07-12",
+    "amount": 650.00,
+    "currency": "INR",
+    "tax_details": "N/A"
+  },
+  "pooja_pharmacy_bill.png": {
+    "vendor_name": "Pooja Medicals",
+    "invoice_number": "PM-904",
+    "date": "2026-07-14",
+    "amount": 300.00,
+    "currency": "INR",
+    "tax_details": "N/A"
+  },
+  "gupta_sweets_bill.png": {
+    "vendor_name": "Gupta Sweets",
+    "invoice_number": "N/A",
+    "date": "2026-07-18",
+    "amount": 577.50,
+    "currency": "INR",
+    "tax_details": "CGST 2.5%, SGST 2.5%"
+  },
+  "royal_footwear_bill.png": {
+    "vendor_name": "Royal Footwear Store",
+    "invoice_number": "552",
+    "date": "2026-07-20",
+    "amount": 1652.00,
+    "currency": "INR",
+    "tax_details": "GST 18%"
+  },
+  "amrut_tea_stall_bill.png": {
+    "vendor_name": "Amrut Tea Stall",
+    "invoice_number": "N/A",
+    "date": "2026-07-22",
+    "amount": 85.00,
+    "currency": "INR",
+    "tax_details": "N/A"
+  },
+  "krishna_dairy_bill.png": {
+    "vendor_name": "Krishna Dairy",
+    "invoice_number": "N/A",
+    "date": "2026-07-23",
+    "amount": 1000.00,
+    "currency": "INR",
+    "tax_details": "N/A"
+  },
+  "sharma_grocery_bill_v2.png": {
+    "vendor_name": "Sharma Kirana Store",
+    "invoice_number": "N/A",
+    "date": "2026-07-12",
+    "amount": 650.00,
+    "currency": "INR",
+    "tax_details": "N/A"
+  },
+  "pooja_pharmacy_bill_v2.png": {
+    "vendor_name": "Pooja Medicals",
+    "invoice_number": "PM-904",
+    "date": "2026-07-14",
+    "amount": 300.00,
+    "currency": "INR",
+    "tax_details": "N/A"
+  },
+  "gupta_sweets_bill_v2.png": {
+    "vendor_name": "Gupta Sweets",
+    "invoice_number": "N/A",
+    "date": "2026-07-18",
+    "amount": 577.50,
+    "currency": "INR",
+    "tax_details": "CGST 2.5%, SGST 2.5%"
+  },
+  "amrut_tea_stall_bill_v2.png": {
+    "vendor_name": "Amrut Tea Stall",
+    "invoice_number": "N/A",
+    "date": "2026-07-22",
+    "amount": 85.00,
+    "currency": "INR",
+    "tax_details": "N/A"
+  }
+}
