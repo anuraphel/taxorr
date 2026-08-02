@@ -54,5 +54,5 @@ streamlit run ui/app.py
 
 ## 🚀 Live Demo
 
-**Streamlit App:** https://your-app-name.streamlit.app
+**Streamlit App:** https://anuraph-taxorrr.streamlit.app
 ```
